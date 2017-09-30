@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>组件定义</title>
+<script type="text/javascript" src="vue.js"></script>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="js/index.js">
+</head>
+<body>
+<div id="app">
+	<div class="clear">
+		<combo class="float-l" :provinces="provinces" label="省份" @selectionchange="onProvinceChange"></combo>
+		<combo class="float-l" :provinces="citys" label="市" @selectionchange="onCityChange"></combo>
+	</div>
+	<div class="result">你选择了{{proName}}</div>
+</div>
+<script type="text/javascript">
+	//第一种组件定义方式
+	Vue.component("combo",{
+		props : ['provinces','label','step'],
+		template : "<div class='clear combo-wrapper'>"
+			+"<div class='label float-l'>{{label}}</div>"
+			+"<div class='combo float-l' @click='show' ref='comboInput'>{{proName}}</div>"
+			+"<ul v-show='isDisplay' class='combo-list' @click='onLiClick($event)' ref='comboList'>"
+				+"<li v-for='prov in provinces' :code='prov.code'>{{prov.name}}</li>"
+			+"</ul>"
+		+"</div>",
+		
+		data:function(){
+			return {
+				isDisplay:false,
+				proName:''
+			}
+		},
+		
+		methods:{
+			show : function(){
+				this.isDisplay = !this.isDisplay;
+			},
+			onLiClick : function(event){
+				var name = event.target.innerHTML;
+				this.proName = name;
+				this.show();
+				//var step = this.$options.propsData.step
+				//读取标签上自定义属性值
+				this.$emit("selectionchange", name);
+			}
+		},
+		//mounted 是vue构造函数或组件的一个属性
+		//执行时间是template内容计算完毕并贴到页面上时触发
+		mounted:function(){
+			//this指针指向当前实例，函数运行时机是template内容贴入到页面的时刻
+			var comboInput = this.$refs.comboInput,
+				comboList = this.$refs.comboList;
+			
+			var left = comboInput.offsetLeft,
+				top = comboInput.offsetTop,
+				height = comboInput.clientHeight;
+			
+			comboList.style.left = left + "px";
+			comboList.style.top = top + height + 5 + "px";
+		}
+	});
+	
+	var vm = new Vue({
+		el:'#app',
+		
+		data : {
+			proName : '',
+			provinces : [{code:'shanxi',name:'陕西',
+							citys:[{'code':'weinan',name:'渭南市'},{'code':'yanan',name:'延安市'}]},
+			             {code:'gansu',name:'甘肃',
+			             	citys:[{'code':'lanzhou',name:'兰州市'},{'code':'baiyin',name:'白银市'}]}
+						],
+		    citys:[]
+		},
+		methods:{
+			onProvinceChange : function(name){
+				var citys = null;
+				for(var i=0;i<this.provinces.length;i++){
+					if(this.provinces[i].name == name){
+						citys = this.provinces[i].citys;
+						break;
+					}
+				}
+				
+				this.citys = citys;
+			},
+			onCityChange : function(cityName){
+				this.proName = cityName;
+			}
+		}
+	});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="/myvue/system/lib/vue/vue.js"></script>
+<title>transition 动画</title>
+<style type="text/css">
+	.fade-enter-active{
+		transition: all 0.5s;
+	}
+	.fade-leave-active{
+		transition: all 1.5s;
+	}
+	.fade-enter, .fade-leave-active{
+		opacity : 0;
+	}
+</style>
+</head>
+<body>
+<div id="app">
+	<button @click="isDisplay = !isDisplay">控制div显示</button>
+	
+	<!-- .fade-enter 无的状态
+	.fade-enter-active  无到有的过程
+	.fade-leave 有的状态
+	.fade-leave-active 有到无的过程  -->
+	<!-- 动画展示部分需要放置到Vue原生支持的标签 transition中,然后对这个动画进行一个命名 -->
+	<transition name="fade">
+		<div v-show="isDisplay">transition 动画</div>
+	</transition>
+</div>
+
+<script type="text/javascript">
+	var vm = new Vue({
+		el:'#app',
+		data : {
+			isDisplay:true
+		}
+	});
+
+</script>
+</body>
+</html>

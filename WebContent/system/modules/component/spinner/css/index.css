@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+.float-l{
+	float:left;
+}
+.spinner-label{
+	height:36px;
+	line-height:36px;
+	width:120px;
+	text-align:right;
+	padding:0 5px;
+}
+.spinner-input{
+	height:32px;
+	line-height:32px;
+	width:160px;
+	padding:0 5px;
+}
+div.btn{
+	width:30px;
+	height:13px;
+	line-height:13px;
+	text-align:center;
+	border:1px solid #c0c0c0;
+	margin-left:-34px;
+	cursor:pointer;
+}
+div.btn:hover{
+	background:#c0c0c0;
+}
+div.plus{
+	margin-top:2px;
+}
+div.reduce{
+	margin-top:19px;
+}
